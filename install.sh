@@ -9,7 +9,7 @@ echo
 
 cat $_PYTHON_TEAM_DIR/README.md
 
-
+echo '--------------------------------------'
 echo 'Here is your initial installation of python'
 echo 'Python search path'
 python -c "import sys; print('\n'.join(sys.path))";
@@ -25,9 +25,7 @@ echo "PYTHONPATH is set to '$PYTHONPATH'. ";
 echo " Using PYTHONPATH leads to issues difficult to debug/analyse.
     Using PYTHONPATH is not easy to maintain.
     Using PYTHONPATH will cause troubles later if not now.
-    I recommend that you remove this PYTHONPATH from your ~/.bashrc and open a new terminal before doing anything in python.
-
-    INSTALLATION FAILED"
+    INSTALLATION FAILED : I recommend that you remove this PYTHONPATH from your ~/.bashrc and open a new terminal before doing anything in python."
     exit 5
 fi
 
@@ -35,9 +33,7 @@ for DIRECTORY in $HOME/.continuum $HOME/.local $HOME/.conda* $HOME/miniconda3; d
     if [ -d "$DIRECTORY" ]; then
         echo "The directory $DIRECTORY exists.
         This may cause troubles with the installation
-        Please move/delete $DIRECTORY
-
-        INSTALLATION FAILED"
+        INSTALLATION FAILED : Please move or delete $DIRECTORY"
         exit 6
     fi
 done
@@ -46,14 +42,14 @@ done
 #echo;read -p 'Type enter to continue'
 
 
+echo '--------------------------------------'
 echo 'First, I will install conda, now. See https://conda.io/docs/install/quick.html#linux-miniconda-install, installer for python3 :'
 echo;read -p 'Type enter to continue'
 echo
 
 bash $_PYTHON_TEAM_DIR/conda-install/Miniconda3-latest-Linux-x86_64.sh -b
 
-echo 'conda installed'
-
+echo '--------------------------------------'
 echo 'I will now add some lines at the end of your .bashrc'
 echo;read -p 'Type enter to continue'
 echo
@@ -63,6 +59,7 @@ echo "export _PYTHON_TEAM_DIR=$_PYTHON_TEAM_DIR" >>  ~/.bashrc
 echo   'source "$_PYTHON_TEAM_DIR/bashrc.conda"' >>  ~/.bashrc
 echo   'source "$_PYTHON_TEAM_DIR/bashrc.bash"' >>  ~/.bashrc
 set +x
+echo;read -p 'Type enter to continue'
 
 echo "Source ~/.bashrc again"
 . ~/.bashrc
@@ -102,10 +99,14 @@ echo 'python executable = ' $(which python)
 #conda install anaconda
 #echo '--------------------------------------'
 
+echo '--------------------------------------'
 echo "Additionnaly I will create a default $HOME/.gitconfig for you (you should edit the file $HOME/.gitconfig afterwards to provide you name and email)."
 echo;read -p 'Type enter to continue'
 echo
 cp $_PYTHON_TEAM_DIR/gitconfig ~/.gitconfig
 
 
-echo "Installation done. Please open a new terminal and run the check_install.sh script"
+echo '--------------------------------------'
+echo "Installation ready."
+echo "You can no try in another terminal : the new environment is not active by default. To use it, you need to run 'setup-conda-team-python-env'."
+echo "Yes, you need to run  'setup-conda-team-python-env' everytimes you want to use the environment. When you don't, you will have the default environment"

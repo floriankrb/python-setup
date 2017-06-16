@@ -1,5 +1,17 @@
+# Overview :
+
 The install.sh script is installing a "standard" python3 environment for scientific purposes.
 
-More precisely it installs conda (with python3) with its root environment, then it creates a default environment named "defaultenv" where it installs a local pip and many packages.'
+More precisely it installs conda (with python3) with its root environment, then it creates a default environment named "defaultenv" where it installs a local pip and many packages.
 
 The check.sh script detect usual errors before/after installation.
+
+# Usage :
+
+cd ~
+git clone /cnrm/vegeo/pinaultf/public/tools/python-team
+cd python-team
+./install.sh
+
+** READ carefully the output, type enter when needed **
+
