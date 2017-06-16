@@ -19,6 +19,27 @@ echo 'python executable = ' $(which python)
 echo;read -p 'Type enter to continue'
 echo
 
+if [ -z ${LD_LIBRARY_PATH+x} ]; then echo "LD_LIBRARY_PATH is unset: ok"; 
+else
+echo "LD_LIBRARY_PATH is set to '$LD_LIBRARY_PATH'. "; 
+echo " Using LD_LIBRARY_PATH leads to issues difficult to debug/analyse.
+    Using LD_LIBRARY_PATH is not easy to maintain.
+    Using LD_LIBRARY_PATH will cause troubles later if not now.
+    INSTALLATION FAILED : I recommend that you remove this LD_LIBRARY_PATH from your ~/.bashrc and open a new terminal before doing anything in python."
+    exit 5
+fi
+
+
+if [ -z ${PYTHONHOME+x} ]; then echo "PYTHONHOME is unset: ok"; 
+else
+echo "PYTHONHOME is set to '$PYTHONHOME'. "; 
+echo " Using PYTHONHOME leads to issues difficult to debug/analyse.
+    Using PYTHONHOME is not easy to maintain.
+    Using PYTHONHOME will cause troubles later if not now.
+    INSTALLATION FAILED : I recommend that you remove this PYTHONHOME from your ~/.bashrc and open a new terminal before doing anything in python."
+    exit 5
+fi
+
 if [ -z ${PYTHONPATH+x} ]; then echo "PYTHONPATH is unset: ok"; 
 else
 echo "PYTHONPATH is set to '$PYTHONPATH'. "; 
