@@ -15,3 +15,23 @@ cd python-team
 
 ** READ carefully the output, type enter when needed **
 
+
+# How to add a package :
+- for one user :
+conda install mynewpackage
+or
+pip install mynewpackage
+
+- for the team
+Install it in your environment :
+$ conda install mynewpackage
+or
+$ pip install mynewpackage
+
+Then, update the environment description (environment.yml).  From the directory where you see this README.md.
+$ conda env export > environment.yml
+$ git diff
+$ gedit environment.yml
+See which package was installed and add what should be added :
+git add -p
+git commit -m'added package mynewpackage'
