@@ -186,6 +186,7 @@ dependencies:
 - tk=8.5.18=0
 - toolz=0.8.2=py36_0
 - tornado=4.5.1=py36_0
+- tqdm=4.14.0=py36_0
 - traitlets=4.3.2=py36_0
 - unicodecsv=0.14.1=py36_0
 - unixodbc=2.3.4=0
@@ -204,6 +205,7 @@ dependencies:
 - zlib=1.2.8=3
 - pip:
   - backports.shutil-get-terminal-size==1.0.0
+  - coloredlogs==7.0
   - et-xmlfile==1.0.1
   - humanfriendly==3.2
   - ipython-genutils==0.2.0
@@ -213,3 +215,5 @@ dependencies:
   - prompt-toolkit==1.0.14
   - rope-py3k==0.9.4.post1
   - tables==3.3.0
+prefix: /home/pinaultf/miniconda3/envs/defaultenv
+
