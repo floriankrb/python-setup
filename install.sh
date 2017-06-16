@@ -104,7 +104,7 @@ echo '--------------------------------------'
 echo "Additionnaly I will create a default $HOME/.gitconfig for you (you should edit the file $HOME/.gitconfig afterwards to provide you name and email)."
 echo;read -p 'Type enter to continue'
 echo
-cp $_PYTHON_TEAM_DIR/gitconfig ~/.gitconfig
+cp $_PYTHON_TEAM_DIR/gitconfig >> ~/.gitconfig
 
 
 echo '--------------------------------------'
