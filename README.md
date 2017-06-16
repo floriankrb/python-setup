@@ -9,7 +9,7 @@ The check.sh script detect usual errors before/after installation.
 # Usage :
 
 cd ~
-git clone /cnrm/vegeo/pinaultf/public/tools/python-team
+git clone /cnrm/vegeo/LSA_SAF/tools/python-team
 cd python-team
 ./install.sh
 
