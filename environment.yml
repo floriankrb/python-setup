@@ -215,5 +215,3 @@ dependencies:
   - prompt-toolkit==1.0.14
   - rope-py3k==0.9.4.post1
   - tables==3.3.0
-prefix: /home/pinaultf/miniconda3/envs/defaultenv
-
