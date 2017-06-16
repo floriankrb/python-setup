@@ -1,3 +1,4 @@
+#!/bin/bash
 if [ -z ${PYTHONPATH+x} ]; then echo "PYTHONPATH is unset: ok"; 
 else 
 echo "PYTHONPATH is set to '$PYTHONPATH'. "; 
