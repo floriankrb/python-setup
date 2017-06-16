@@ -48,6 +48,7 @@ echo;read -p 'Type enter to continue'
 echo
 
 bash $_PYTHON_TEAM_DIR/conda-install/Miniconda3-latest-Linux-x86_64.sh -b
+echo 'The full installation is NOT finished'
 
 echo '--------------------------------------'
 echo 'I will now add some lines at the end of your .bashrc'
