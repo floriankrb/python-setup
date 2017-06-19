@@ -8,7 +8,7 @@ export PYTHONNOUSERSITE=1
 function setup-conda-team-python-env {
     # added by Miniconda3 4.3.21 installer
     echo "adding '$HOME/miniconda3/bin' to the PATH"
-    echo "Setting conda default environement"
+    echo "Setting conda default environment"
     export PATH="$HOME/miniconda3/bin:$PATH"
     export PYTHONNOUSERSITE=1
     source activate defaultenv ;
