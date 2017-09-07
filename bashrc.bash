@@ -15,3 +15,7 @@ PS1="\[\033[33m\]\$(parse_git_branch)\[\033[34m\]\t\[\033[m\] \[\033[44m\]\h\e[0
 
 echo $DISPLAY > $HOME/.latest_display
 alias f-display-reset='export DISPLAY=$(cat $HOME/.latest_display)'
+
+echo "run hdf-set-up-my-hdf5-lib-to-use-pinaultf-libraries to use the hdf library $_PYTHON_TEAM_DIR/hdf-set-up-my-hdf5-lib-to-use-pinaultf-libraries.TODO.sh"
+alias hdf-set-up-my-hdf5-lib-to-use-pinaultf-libraries="source $_PYTHON_TEAM_DIR/hdf-set-up-my-hdf5-lib-to-use-pinaultf-libraries.TODO.sh"
+
