@@ -1,9 +1,10 @@
+# If not running interactively, don't do anything
+[ -z "$PS1" ] && return
+
 # User specific aliases and functions
 alias llt='ls -rlt'
 alias sxvgo1='ssh sxvgo1'
 
-# If not running interactively, don't do anything
-[ -z "$PS1" ] && return
 
 bind 'set completion-ignore-case on'
 
