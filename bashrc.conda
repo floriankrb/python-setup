@@ -1,3 +1,6 @@
+# If not running interactively, don't do anything
+[ -z "$PS1" ] && return
+
 function _condasetup_root_env {
     # added by Miniconda3 4.3.21 installer
     echo "adding '$HOME/miniconda3/bin' to the PATH"
