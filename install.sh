@@ -50,7 +50,7 @@ echo " Using PYTHONPATH leads to issues difficult to debug/analyse.
     exit 5
 fi
 
-for DIRECTORY in $HOME/.continuum $HOME/.local $HOME/.conda* $HOME/miniconda3; do
+for DIRECTORY in $HOME/.continuum $HOME/.conda* $HOME/miniconda3; do
     if [ -d "$DIRECTORY" ]; then
         echo "The directory $DIRECTORY exists.
         This may cause troubles with the installation
