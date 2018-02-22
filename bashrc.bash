@@ -1,6 +1,9 @@
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
+#limit memory usage per process to 30G
+ulimit -v 30000000
+
 # User specific aliases and functions
 alias llt='ls -rlt'
 alias sxvgo1='ssh sxvgo1'
