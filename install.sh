@@ -83,8 +83,9 @@ echo   'source "$_PYTHON_TEAM_DIR/bashrc.bash"' >>  ~/.bashrc
 set +x
 echo;read -p 'Type enter to continue'
 
-echo "Source ~/.bashrc again"
+echo "# reload ~/.bashrc again to make sure it still works"
 . ~/.bashrc
+echo "# read and reloaded ~/.bashrc ok"
 
 # put conda in the path
 export PATH="$HOME/miniconda3/bin:$PATH"
@@ -114,7 +115,11 @@ python -c "import sys; print('\n'.join(sys.path))";
 echo '------------';
 echo 'python executable = ' $(which python)
 
-#echo '--------------------------------------'
+echo '--------------------------------------'
+echo 'Optionnaly, you may want to update conda by doing :'
+echo 'conda update -n base conda'
+echo '--------------------------------------'
+
 #echo 'I will now install many packages (from the anaconda distribution)'
 #echo;read -p 'Type enter to continue'
 #echo
