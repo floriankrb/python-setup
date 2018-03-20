@@ -32,6 +32,7 @@ dependencies:
   - ca-certificates=2018.1.18=0
   - cairo=1.14.10=0
   - cartopy=0.16.0=py36_0
+  - certifi=2018.1.18=py36_0
   - cffi=1.11.2=py36_0
   - chardet=3.0.4=py36_0
   - click=6.7=py_1
@@ -273,7 +274,6 @@ dependencies:
   - anaconda-navigator=1.6.4=py36_0
   - boto=2.48.0=py36_0
   - bz2file=0.98=py36_0
-  - certifi=2018.1.18=py36_0
   - configobj=5.0.6=py36_0
   - get_terminal_size=1.0.0=py36_0
   - libgcc=5.2.0=0
@@ -293,4 +293,5 @@ dependencies:
     - humanfriendly==3.2
     - pyminifier==2.1
     - tables==3.4.2
+    - tzwhere==3.0.3
 
