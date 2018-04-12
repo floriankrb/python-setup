@@ -1,0 +1,7 @@
+echo 'ndcu Usage ? try running these :
+  mkdir -p $HOME/.ncdudbs && ncdu $HOME                -o $HOME/.ncdudbs/home.db # do not do this too often, it puts a heavy load on the filesystem
+  mkdir -p $HOME/.ncdudbs && ncdu /cnrm/vegeo/`whoami` -o $HOME/.ncdudbs/cnrm.db # do not do this too often, it puts a heavy load on the filesystem
+
+  ncdu -f $HOME/.ncdudbs/cnrm.db # run this as often as you like
+  ncdu -f $HOME/.ncdudbs/home.db # run this as often as you like'
+
