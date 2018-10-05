@@ -38,4 +38,5 @@ alias f-display-reset='export DISPLAY=$(cat $HOME/.latest_display)'
 echo "Run 'hdf-set-up-my-hdf5-lib-to-use-pinaultf-libraries' if you want to use the hdf library from Florian"
 alias hdf-set-up-my-hdf5-lib-to-use-pinaultf-libraries="source $_PYTHON_TEAM_DIR/hdf-set-up-my-hdf5-lib-to-use-pinaultf-libraries.TODO.sh"
 
-export PATH=$PATH:$_PYTHON_TEAM_DIR/bin
+export PATH=$_PYTHON_TEAM_DIR/bin:$PATH
+export PYTHONPATH=$_PYTHON_TEAM_DIR/custom-python-libraries:$PYTHONPATH
