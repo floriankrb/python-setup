@@ -358,5 +358,4 @@ dependencies:
     - pyminifier==2.1
     - tables==3.4.4
     - tzwhere==3.0.3
-prefix: /home/pinaultf/miniconda3/envs/defaultenv
 
