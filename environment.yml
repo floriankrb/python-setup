@@ -125,6 +125,8 @@ dependencies:
   - jupyter_highlight_selected_word=0.2.0=py36_0
   - jupyter_latex_envs=1.4.4=py36_0
   - jupyter_nbextensions_configurator=0.4.0=py36_0
+  - jupyterlab=0.34.12=py36_0
+  - jupyterlab_launcher=0.13.1=py_2
   - keras=2.2.4=py36_0
   - keras-applications=1.0.4=py_1
   - keras-preprocessing=1.0.2=py_1
@@ -356,6 +358,7 @@ dependencies:
     - lexery==1.1.0
     - msgpack==0.5.6
     - pyminifier==2.1
+    - sphinx-rtd-theme==0.4.2
     - tables==3.4.4
     - tzwhere==3.0.3
 
