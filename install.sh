@@ -92,7 +92,7 @@ export PATH="$HOME/miniconda3/bin:$PATH"
 export PYTHONNOUSERSITE=1
 
 echo '--------------------------------------'
-echo 'The installation is not complete but you have now your own personal conda root environment (do not use this one) : '
+echo 'The installation is not complete, you have now only your own conda root environment (do not use this one) : '
 echo 'Python search path'
 python -c "import sys; print('\n'.join(sys.path))";
 echo '------------';
@@ -101,13 +101,13 @@ echo 'python executable = ' $(which python)
 echo;read -p 'Type enter to continue'
 echo
 
-conda env create -f $_PYTHON_TEAM_DIR/environment.yml 
+conda env create -f $_PYTHON_TEAM_DIR/environment.yml
 echo "adding '$HOME/miniconda3/bin' to the PATH"
 export PATH="$HOME/miniconda3/bin:$PATH"
 export PYTHONNOUSERSITE=1
 source activate defaultenv 
 #setup-conda-team-python-env
-conda install pip  # It is VERY important to use pip in the environment and not the global system pip and not the conda root pip
+conda install -y pip  # It is VERY important to use pip in the environment and not the global system pip and not the conda root pip
 echo '--------------------------------------'
 echo 'Now you have your own personal conda default environment (use it) : '
 echo 'Python search path'
@@ -127,7 +127,7 @@ echo '--------------------------------------'
 #echo '--------------------------------------'
 
 echo '--------------------------------------'
-echo "Additionnaly I will create a default $HOME/.gitconfig for you (you should edit the file $HOME/.gitconfig afterwards to provide you name and email)."
+echo "Finally I will create a default $HOME/.gitconfig for you (you will NEED to edit the file $HOME/.gitconfig afterwards to provide your name and email)."
 echo;read -p 'Type enter to continue'
 echo
 cat $_PYTHON_TEAM_DIR/gitconfig >> ~/.gitconfig
@@ -136,4 +136,4 @@ cat $_PYTHON_TEAM_DIR/gitconfig >> ~/.gitconfig
 echo '--------------------------------------'
 echo "Installation ready."
 echo "You can no try in another terminal : the new environment is not active by default. To use it, you need to run 'setup-conda-team-python-env'."
-echo "Yes, you need to run  'setup-conda-team-python-env' everytimes you want to use the environment. When you don't, you will have the default environment"
+echo "Yes, you need to run  'setup-conda-team-python-env' everytimes you want to use the environment. When you don't, you will have the default environment supported by your computer department"
