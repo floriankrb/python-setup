@@ -2,7 +2,7 @@
 [ -z "$PS1" ] && return
 
 #limit memory usage per process to 30G
-ulimit -v 30000000
+ulimit -v 40000000
 
 # User specific aliases and functions
 alias llt='ls -rlt'
