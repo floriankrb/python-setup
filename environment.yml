@@ -273,5 +273,12 @@ dependencies:
   - tk=8.6.8=hbc83047_0
   - xz=5.2.4=h14c3975_4
   - pip:
+    - coloredlogs==10.0
+    - datetime-glob==1.0.7
+    - f90nml==1.0.2
+    - humanfriendly==4.17
+    - lexery==1.1.0
     - msgpack==0.5.6
+    - pyminifier==2.1
+    - tzwhere==3.0.3
 
