@@ -32,7 +32,6 @@ dependencies:
   - ca-certificates=2018.1.18=0
   - cairo=1.14.10=0
   - cartopy=0.16.0=py36_0
-  - certifi=2018.1.18=py36_0
   - cffi=1.11.2=py36_0
   - chardet=3.0.4=py36_0
   - click=6.7=py_1
@@ -113,12 +112,16 @@ dependencies:
   - lazy-object-proxy=1.3.1=py36_0
   - leather=0.3.3=py36_0
   - libffi=3.2.1=3
+  - libgcc=5.2.0=0
+  - libgcc-ng=7.2.0=hdf63c60_3
+  - libgfortran=3.0.0=1
   - libgpuarray=0.7.6=0
   - libiconv=1.15=h470a237_1
   - libnetcdf=4.5.0=3
   - libpng=1.6.34=0
   - libprotobuf=3.5.2=hd28b015_1
   - libsodium=1.0.15=1
+  - libstdcxx-ng=7.2.0=hdf63c60_3
   - libtiff=4.0.9=0
   - libtool=2.4.6=0
   - libxcb=1.12=1
@@ -174,6 +177,7 @@ dependencies:
   - pexpect=4.4.0=py36_0
   - pickleshare=0.7.4=py36_0
   - pillow=5.0.0=py36_0
+  - pip=10.0.1=py36_0
   - pixman=0.34.0=1
   - pluggy=0.6.0=py_0
   - ply=3.10=py36_0
@@ -187,7 +191,6 @@ dependencies:
   - pycosat=0.6.3=py36_0
   - pycparser=2.18=py36_0
   - pycrypto=2.6.1=py36_1
-  - pyepsg=0.3.2=py36_0
   - pyflakes=1.6.0=py36_0
   - pygments=2.2.0=py36_0
   - pygpu=0.7.6=py36_0
@@ -198,7 +201,6 @@ dependencies:
   - pyodbc=4.0.17=py36_0
   - pyopenssl=17.4.0=py36_0
   - pyparsing=2.2.0=py36_0
-  - pyproj=1.9.5.1=py36_0
   - pyqt=5.6.0=py36_4
   - pyresample=1.8.1=py36_0
   - pyshp=1.2.12=py_0
@@ -289,25 +291,26 @@ dependencies:
   - anaconda-navigator=1.6.4=py36_0
   - boto=2.48.0=py36_0
   - bz2file=0.98=py36_0
+  - certifi=2018.1.18=py36_0
   - configobj=5.0.6=py36_0
+  - future=0.17.1=py36_0
   - get_terminal_size=1.0.0=py36_0
-  - libgcc=5.2.0=0
-  - libgcc-ng=7.2.0=hdf63c60_3
-  - libgfortran=3.0.0=1
-  - libstdcxx-ng=7.2.0=hdf63c60_3
   - llvmlite=0.20.0=py36_0
   - mkl=2017.0.3=0
   - mkl-service=1.1.2=py36_3
   - navigator-updater=0.1.0=py36_0
   - numba=0.35.0=np113py36_0
-  - pip=10.0.1=py36_0
   - pycurl=7.43.0=py36_2
+  - pyepsg=0.3.2=py36_0
+  - pyproj=1.9.5.1=py36_0
   - sphinxcontrib=1.0=py36_0
   - pip:
     - backports.shutil-get-terminal-size==1.0.0
     - coloredlogs==7.0
+    - datetime-glob==1.0.7
     - f90nml==0.21
     - humanfriendly==3.2
+    - lexery==1.1.0
     - pyminifier==2.1
     - tables==3.4.2
     - tzwhere==3.0.3
