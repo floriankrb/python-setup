@@ -1,0 +1,233 @@
+# Issue :
+When using matplotlib with ssh to sxvgo1, from some machine, we get :
+
+libGL error: No matching fbConfigs or visuals found
+libGL error: failed to load driver: swrast
+Could not initialize OpenGL for RasterGLSurface, reverting to RasterSurface."
+
+# Solution:
+Cannot solve. See details below.
+
+****************************************************************
+
+Ok, on peut considerer ça comme résolu. Il faudrait l'indiquer dans la doc pour éviter qu'on recommence à chercher.
+
+----- Météo-France -----
+PINAULT FLORIAN
+
+Envoyé: Mercredi 14 Novembre 2018 10:56:31
+Objet: Re: sxvgo1 / libgl & swrast driver problem
+
+Bonjour Rémi,
+
+d'accord, j'en prends bonne note.
+Merci d'avoir enquêté.
+
+Bonne journée
+Chloé
+Envoyé: Mardi 13 Novembre 2018 17:04:42
+Objet: Re: sxvgo1 / libgl & swrast driver problem
+
+Bonjour,
+
+Il s'agit d'un problème identifié, relatif à OpenGL et SSH qui utilise des ressources distantes (qui varient donc selon le PC client) que nous ne pouvons pas résoudre.
+
+Il faut donc utiliser Spyder sur le poste local et non sur le serveur. (voir mail ci dessous)
+
+Bonne soirée
+
+Rémi
+
+    Envoyé: Mercredi 19 Septembre 2018 10:37:39
+    Objet: Fwd: erreur spyder depuis le poste lxcnrm17
+
+    Eric,
+
+    j'avais vu  le problème décrit par Florence lorsque j'ai ajouté 'spyder3' dans le RPM profil-cnrm.spec
+
+    le problème arrive aussi bien avec spyder que spyder3 , il est lié à openGL , lorsque l'on est connecté
+    à une machine distante par ssh. Selon les machines utilisées des deux bouts du ssh, cela fonctionne ou pas.
+
+
+    j'ai indiqué à Florence qu'il convenait d'utiliser spyder(3) sur le poste client local (et non pas sur le serveur
+    d'équipe si on a le problème).
+
+
+    Pierre.
+
+
+---- Météo-France -----
+
+Envoyé: Mardi 13 Novembre 2018 15:15:20
+Objet: sxvgo1 / libgl & swrast driver problem
+
+Bonjour,
+
+
+Nous avons un comportement différents sur deux machines a priori identiques : lxvgo11 (pinaultf) et lxvgo6(vincentch).
+
+Quand je lance mon script matplotlib (python) sur sxvo1, interactivement, avec un affichage graphique sur l'écran de lxvgo11, j'ai mon plot sans problème.
+
+lxvgo11 $ ssh -X vincentch@sxvgo1
+sxvgo1 $ setup-some-paths
+sxvgo1 $ python3 testenv.py
+(show plot)
+
+
+Quand je fais la même chose depuis la machine lxvgo6 j'ai le problème suivant.
+
+lxvgo6 $ ssh -X vincentch@sxvgo1
+sxvgo1 $ setup-some-paths
+sxvgo1 $ python3 testenv.py
+(show plot)
+libGL error: No matching fbConfigs or visuals found
+libGL error: failed to load driver: swrast
+Could not initialize OpenGL for RasterGLSurface, reverting to RasterSurface.
+
+Le système sur les deux machines est donc différent.
+
+
+
+Apparement, la machine lxvgo6 n'a pas une installation correct pour assurer que le -X du ssh permette d'afficher correctement les plots de matplotlib.
+Il suffirait peut-être de réinstaller les drivers nvidia sur cette machine lxvgo6, d'après https://github.com/openai/gym/issues/509#issuecomment-282456712
+
+Pour info, sur lxvgo11, docker a été installé récemment. Peut-être c'est ce qui a réinstallé le driver nvidia et résolu le problème.
+Aussi, dans l'étape de "setup-some-path" on utilise des libraries python plus à jour que celles qui sont installées, par exemple on utilise matplotlib 3.0.0 (pas 1.5.1).
+Ci-joint, le script en question.
+
+Est-ce que vous pouvez regarder si une mise à jour de lxvgo6 résoudrait le problème ?
+
+
+Merci
+
+Florian
+
+----- Météo-France -----
+PINAULT FLORIAN
+
+Envoyé: Lundi 12 Novembre 2018 14:21:37
+Objet: Re: sxvgo1 / libgl & swrast driver problem
+
+the script works perfectly with my environment on sxvgo1
+
+
+
+Envoyé: Lundi 12 Novembre 2018 14:10:14
+Objet: Re: sxvgo1 / libgl & swrast driver problem
+
+Hi Florian,
+
+after reinstalling the newest conda and the environment you provided,
+the libgl issue is still there on sxvgo1.
+"
+libGL error: No matching fbConfigs or visuals found
+libGL error: failed to load driver: swrast
+Could not initialize OpenGL for RasterGLSurface, reverting to RasterSurface."
+
+Here attached is a short script which returns an error when I run it on sxvgo1,
+and no error when I run it on my local machine.
+
+Can you test it with your account, just to make sure you get the same behaviour on sxvgo1 ?
+
+Thanks for your help with that.
+Chloé
+Envoyé: Jeudi 8 Novembre 2018 09:53:10
+Objet: Re: sxvgo1 / libgl & swrast driver problem
+
+Chloé said:
+> Code works fine on my machine + conda environment
+> But not on sxvgo1
+
+Perhaps I can take this issue and you can keep working on your machine in the meanwhile.
+Do you have a minimal script that I can run to reproduce this behaviour ?
+
+Florian
+
+Envoyé: Mercredi 7 Novembre 2018 17:59:46
+Objet: Fwd: sxvgo1 / libgl & swrast driver problem
+
+Here's the answer from CTI
+Does not help that much...
+
+Catherine will discuss again with Eric about this graphical lib stuff.
+Envoyé: Mercredi 7 Novembre 2018 16:33:48
+Objet: Fwd: sxvgo1 / libgl & swrast driver problem
+
+
+
+----- Météo-France -----
+
+Envoyé: Mercredi 7 Novembre 2018 16:28:46
+Objet: Re: sxvgo1 / libgl & swrast driver problem
+
+il n'y a pas de carte graphique sur les serveurs, donc pas d'openGL possible
+
+ce qui m’étonne beaucoup, c'est qu'elle puisse lancer spyder sur le serveur, j'ai eu plusieurs demandes à ce sujet
+(pour me dire que ça ne marchait pas)
+
+----- Météo-France -----
+
+Envoyé: Mercredi 7 Novembre 2018 16:05:51
+Objet: Fwd: sxvgo1 / libgl & swrast driver problem
+
+Bonjour Eric,
+
+Je te transmets le message de Chloé concernant nos environnements python.
+Tu auras peut-être une idée en lisant les retours d'erreur...
+
+Merci,
+Catherine
+
+----- Météo-France -----
+
+Envoyé: Mercredi 7 Novembre 2018 15:31:32
+Objet: sxvgo1 / libgl & swrast driver problem
+
+Catherine,
+
+I am trying to run a python code from Suman, producing (nice!) images.
+I work inside a conda environment to have python 3.
+When I run the code on my machine (lxvgo6) within this conda environment, it works fine.
+When I run it on sxvgo1 through spyder, still within this conda environment, it runs fine.
+When I run the code on sxvgo1 command line, without asking to show the images, still within this conda environment, it also runs fine.
+When I run the code on sxvgo1 command line, asking to show the images, still within this conda environment, it returns the following errors:
+libGL error: No matching fbConfigs or visuals found
+libGL error: failed to load driver: swrast
+
+When I set LIBGL_DEBUG = verbose, it says a bit more :
+libGL: screen 0 does not appear to be DRI2 capable
+libGL: OpenDriver: trying /usr/lib64/dri/tls/swrast_dri.so
+libGL: OpenDriver: trying /usr/lib64/dri/swrast_dri.so
+libGL: Can't open configuration file /home/vincentch/.drirc: Aucun fichier ou dossier de ce type.
+libGL: Can't open configuration file /home/vincentch/.drirc: Aucun fichier ou dossier de ce type.
+libGL error: No matching fbConfigs or visuals found
+libGL error: failed to load driver: swrast
+Could not initialize OpenGL for RasterGLSurface, reverting to RasterSurface.
+Even though the driver /usr/lib64/dri/swrast_dri.so actually exists.
+
+
+Suman gets a similar error message on swrast driver, so this does not seem specific to my account.
+
+
+Finally, on sxvgo1 (even outside my conda environment), the command
+> glxinfo
+returns a similar error message:
+libGL: screen 0 does not appear to be DRI2 capable
+libGL: OpenDriver: trying /usr/lib64/dri/tls/swrast_dri.so
+libGL: OpenDriver: trying /usr/lib64/dri/swrast_dri.so
+libGL: Can't open configuration file /home/vincentch/.drirc: No such file or directory.
+libGL: Can't open configuration file /home/vincentch/.drirc: No such file or directory.
+libGL error: No matching fbConfigs or visuals found
+libGL error: failed to load driver: swrast
+Error: couldn't find RGB GLX visual or fbconfig
+name of display: sxvgo1:25.0
+
+
+
+It seems the code used to run some time ago, without this swrast issue.
+(Suman said that this could have started after the mageia 6 update)
+
+Can we ask IT people if they have a clue on how to fix this ?
+
+Thanks !
+Chloé
