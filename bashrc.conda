@@ -15,5 +15,5 @@ function setup-conda-team-python-env {
     . /home/pinaultf/miniconda3/etc/profile.d/conda.sh
     #export PYTHONNOUSERSITE=1
     export HDF5_USE_FILE_LOCKING=FALSE;
-    source activate defaultenv ;
+    conda activate defaultenv ;
 }
