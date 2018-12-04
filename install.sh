@@ -135,5 +135,5 @@ cat $_PYTHON_TEAM_DIR/gitconfig >> ~/.gitconfig
 
 echo '--------------------------------------'
 echo "Installation ready."
-echo "You can no try in another terminal : the new environment is not active by default. To use it, you need to run 'setup-conda-team-python-env'."
+echo "You can now try in another terminal : the new environment is not active by default. To use it, you need to run 'setup-conda-team-python-env'."
 echo "Yes, you need to run  'setup-conda-team-python-env' everytimes you want to use the environment. When you don't, you will have the default environment supported by your computer department"
