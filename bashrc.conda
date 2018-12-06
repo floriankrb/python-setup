@@ -4,7 +4,7 @@
 function _condasetup_root_env {
     # added by Miniconda3 4.3.21 installer
     echo "adding '$HOME/miniconda3/bin' to the PATH"
-    . /home/pinaultf/miniconda3/etc/profile.d/conda.sh
+    . /home/$HOME/miniconda3/etc/profile.d/conda.sh
     #export PYTHONNOUSERSITE=1
 }
 
@@ -12,7 +12,7 @@ function setup-conda-team-python-env {
     # added by Miniconda3 4.3.21 installer
     echo "adding '$HOME/miniconda3/bin' to the PATH"
     echo "Setting conda default environment"
-    . /home/pinaultf/miniconda3/etc/profile.d/conda.sh
+    . /home/$HOME/miniconda3/etc/profile.d/conda.sh
     #export PYTHONNOUSERSITE=1
     export HDF5_USE_FILE_LOCKING=FALSE;
     conda activate defaultenv ;
