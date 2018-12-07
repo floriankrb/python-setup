@@ -1,1 +1,63 @@
-/cnrm/vegeo/pinaultf/tools/ftools/scripts/move-data
+#!/usr/bin/env python
+from __future__ import print_function
+
+from datetime import datetime
+from datetime import timedelta
+import datetime_glob
+import argparse
+import os
+import re
+import shutil
+import sys
+import time
+import glob
+parser = argparse.ArgumentParser(description='move files according to filename, date, etc')
+parser.add_argument('fromlist', help='Files to move search pattern. Ex : input/*')
+parser.add_argument('frompattern', help='Files to move pattern. Ex : input/HDF5_%%Y%%m%%d%%H%%M%%S')
+parser.add_argument('topattern', help='Destination pattern. Ex : output/%%Y/%%m/%%d/%%H/%%M/%%S/{infile}')
+parser.add_argument('--keep', action='store_true', help='Copy files, don\'t delete the input')
+parser.add_argument('-v', '--verbose', action='store_true', help='Verbose mode')
+parser.add_argument('-d', '--dry', action='store_true', help='Dry run. Don\'t do anything, only show what would be done (use it with -v)')
+args = parser.parse_args()
+
+
+files_of_interest = glob.glob(args.fromlist)
+print('Found ' + str(len(files_of_interest)) + ' files in the search pattern ('+ args.fromlist + ')')
+
+matcher = datetime_glob.Matcher(pattern=args.frompattern)
+
+processed = 0
+for in_filename in files_of_interest:
+    # find date from file
+    in_basename = os.path.basename(in_filename)
+    try:
+        date = matcher.match(in_filename).as_datetime()
+    except AttributeError:
+        try:
+            date = matcher.match(in_basename).as_datetime()
+        except AttributeError:
+            if args.verbose: print('Cannot parse date string ' + str(in_basename) + ' with ' + str(args.frompattern))
+            continue
+
+    # craft output filename path from date (and input filename)
+    out_filename = date.strftime(args.topattern)
+    out_filename = out_filename.format(infile=in_basename)
+    out_dirname = os.path.dirname(out_filename)
+    if not os.path.exists(out_dirname):
+        if not args.dry:
+            os.makedirs(out_dirname)
+
+    # move or copy file
+    processed = processed + 1
+    if args.keep:
+        if args.verbose: 
+            print('cp ' + in_filename + ' ' + out_filename)
+        if not args.dry:
+            shutil.copy2(in_filename, out_filename)
+    else:
+        if args.verbose:
+            print('mv ' + in_filename + ' ' + out_filename)
+        if not args.dry:
+            shutil.move(in_filename, out_filename)
+
+print('moved (or copied) ' + str(processed) + ' files (from ' + args.frompattern + ')')
