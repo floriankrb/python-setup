@@ -1,0 +1,86 @@
+#!/bin/env python
+from __future__ import print_function
+import argparse
+import h5py
+import sys
+import re
+import numpy as np
+import logging
+
+global differs
+differs = False
+
+def main():
+    parser = argparse.ArgumentParser(description='compare two hdf5 files', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    parser.add_argument('hdf', nargs='+', help='hdf5 files')
+    parser.add_argument('-p', '--precision', type=float, default=0.00001, help='Precision to compare floats')
+    parser.add_argument('-v', '--verbose', action='store_true', help='')
+    parser.add_argument('-l', '--list', action='store_true', help='list all differences (very verbose output)')
+    parser.add_argument('-i', '--ignore', nargs='+',help='list elements to ignore (typical use : version number or date of file creation')
+
+    args = parser.parse_args()
+    if args.ignore is None: args.ignore = []
+
+    filename1 = args.hdf[0]
+    filename2 = args.hdf[1]
+
+    def warn_additional_keys(list1, list2, name1, name2, ignore):
+        global differs
+        onlyl1 = list(set(list1.keys()) - set(list2.keys()))
+        onlyl2 = list(set(list2.keys()) - set(list1.keys()))
+        both = list(set(list1.keys()) & set(list2.keys()))
+        if onlyl1:
+            differs = True
+            logging.warn("Keys only in " + name1 + ' : ' + ','.join(onlyl1))
+        if onlyl2:
+            differs = True
+            logging.warn("Keys only in " + name2 + ' : ' + ','.join(onlyl2))
+        for a in both:
+            if str(list1[a]) != str(list2[a]):
+                if a in ignore:
+                    logging.debug('ignoring difference for attribute ' + str(a))
+                    continue
+                logging.warn(name1 + ' and ' + name2 + ' differs on attribute : ' + a + ' : ' + str(list1[a]) + ' != ' + str(list2[a]) )
+                differs = True
+        return both
+
+    h1 = h5py.File(filename1,'r')
+    h2 = h5py.File(filename2,'r')
+    both = warn_additional_keys(h1, h2, name1 = filename1, name2 = filename2, ignore=args.ignore)
+    warn_additional_keys(h1.attrs,h2.attrs, name1 = filename1, name2 = filename2, ignore=args.ignore)
+
+    for key in both:
+
+        dataset1 = h1[key]
+        dataset2 = h2[key]
+
+        common_attributes = warn_additional_keys(dataset1.attrs,dataset2.attrs, name1 = filename1 + '/' + key, name2 = filename2 + '/' + key, ignore=args.ignore)
+
+        data1 = dataset1[:]
+        data2 = dataset2[:]
+        dtype1 = dataset1.dtype
+        dtype2 = dataset2.dtype
+        if dtype1 != dtype2:
+            differs = True
+            logging.warn('Datasets dtypes differ for key ' + key + ' : ' + str(dtype1) + ' != ' + str(dtype2) )
+        diff = np.count_nonzero(abs(data2 - data1) > args.precision)
+        if diff:
+            logging.warn('Datasets differ for key ' + key + ' : ' + str(diff) + ' differences (precision ' + str(args.precision) + ')')
+            differs = True
+            if args.list:
+                difflist = np.where(abs(data2 - data1) > args.precision)
+                stackeddiff = np.stack(difflist)
+                logging.warn(str(stackeddiff))
+                x = stackeddiff[0][0]
+                y = stackeddiff[1][0]
+                logging.warn(str(([x,y], key, filename1 + ' = ' + str(data1[x,y]), filename2 + ' = ' + str(data2[x,y]))))
+            if args.verbose:
+                logging.warn(filename1 + '/' + key + ': min/max mean/stdev = ' + str((data1.min(),data1.max(),data1.sum()/float(len(data1.flat)),data1.std())))
+                logging.warn(filename2 + '/' + key + ': min/max mean/stdev = ' + str((data2.min(),data2.max(),data2.sum()/float(len(data2.flat)),data2.std())))
+        if args.verbose and not diff:
+            logging.warn('No significative difference for key ' + key +' (precision ' + str(args.precision) +')')
+
+if __name__ == '__main__':
+    main()
+    if differs: exit(-1)
+
