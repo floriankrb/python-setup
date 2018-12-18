@@ -14,7 +14,7 @@ function setup-conda-team-python-env {
     echo "Setting conda default environment"
     . /$HOME/miniconda3/etc/profile.d/conda.sh
     #export PYTHONNOUSERSITE=1
-    _PYTHON_TEAM_VARENV=`cat defaultenvname.txt`
+    _PYTHON_TEAM_VARENV=`cat $_PYTHON_TEAM_DIR/defaultenvname.txt`
     export HDF5_USE_FILE_LOCKING=FALSE;
     conda activate $_PYTHON_TEAM_VARENV;
 }
