@@ -101,7 +101,7 @@ echo 'python executable = ' $(which python)
 echo;read -p 'Type enter to continue'
 echo
 
-_PYTHON_TEAM_VARENV=`cat defaultenvname.txt`
+_PYTHON_TEAM_VARENV=`cat $_PYTHON_TEAM_DIR/defaultenvname.txt`
 
 conda env create -f $_PYTHON_TEAM_DIR/$_PYTHON_TEAM_VARENV.yml
 
