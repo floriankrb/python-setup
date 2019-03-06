@@ -42,7 +42,7 @@ fi
 
 if [ -z ${PYTHONPATH+x} ]; then echo "PYTHONPATH is unset: ok"; 
 else
-echo "PYTHONPATH is set to '$PYTHONPATH'. "; 
+echo "PYTHONPATH is set to '$PYTHONPATH'. ";
 echo " Using PYTHONPATH leads to issues difficult to debug/analyse.
     Using PYTHONPATH is not easy to maintain.
     Using PYTHONPATH will cause troubles later if not now.
