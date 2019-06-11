@@ -16,10 +16,11 @@ cd python-team
 ** READ carefully the output, type enter when needed **
 
 # Another way to install
-0 - Create a new env : conda create -n myenv ; conda activate myenv
-1 - Install conda packages that are in packages-list.conda.txt : conda install -c conda-forge ....
-2 - Install pip packages that are in packages-list.pip.txt
-3 - Finalise jupyterlab packages : jupyter.labextension.install.sh  (this is not included in the automatic install.sh script)
+0 - Create a new env : conda create -n myenv python=3.6; conda activate myenv
+1 - Install conda packages that are in packages-list.conda.txt : conda install -c conda-forge `cat packages-list.conda.txt`
+2 - Install pip packages that are in packages-list.pip.txt : pip install `cat packages-list.pip.txt`
+3 - Finalise jupyterlab packages : source jupyter.labextension.install.sh  (this is not included in the automatic install.sh script)
+4 [optional] - Write the name of the env in defaultenvname.txt : echo myenv > defaultenvname.txt
 
 # How to add a package :
 - for one user :
