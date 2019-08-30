@@ -13,4 +13,8 @@ def ensure_dir(filename=None):
             if not os.path.exists(dirname):
                 raise(e)
 
+def savefig(plt, filename):
+    ensure_dir(filename)
+    logging.info(f'Saving plot in {filename}')
+    plt.savefig(filename)
 

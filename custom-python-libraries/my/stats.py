@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import logging
 import xarray as xr
 import numpy as np
 import cartopy.crs as ccrs
@@ -7,15 +8,30 @@ import matplotlib.pyplot as plt
 import matplotlib.lines as mlines
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
-def get_r2(x,y):
+import my.io
+
+def get_r2(x,y, sample_weight=None):
     """ input is two numpy array, any size, but identical size. Nan are removed, the linear model is fitted. Output is [r2_score, linreg] """
+    # remove nan data
     ok = np.logical_and(~np.isnan(x), ~np.isnan(y))
     x,y = x[ok], y[ok]
+    if not sample_weight is None: sample_weight = sample_weight[ok]
+
+    # reshape
     x, y  = x.reshape(-1, 1),y.reshape(-1, 1)
+    #if not sample_weight is None: sample_weight = sample_weight.reshape(-1, 1)
+
+    # perform regression
     linreg = LinearRegression()
-    linreg.fit(x,y)
+    if not sample_weight is None: linreg.fit(x,y,sample_weight)
+    else: linreg.fit(x,y)
+
+    # compute r2_score
     y_pred = linreg.predict(x)
-    return r2_score(y, y_pred), linreg
+    if not sample_weight is None: r2 = r2_score(y, y_pred, sample_weight)
+    else: r2 = r2_score(y, y_pred)
+
+    return r2, linreg
 
 def compute_crit(candidate, ref, candidatename,refname):
     """ use get_r2 to print nicely different criterion """
@@ -56,9 +72,9 @@ def plot_scatterplot(candidate, ref, candidatename,refname, hexbin_kwargs=None, 
     x = ref.values.flatten()
     y = candidate.values.flatten()
     if not weights is None:
-        broadcasted_weigths = xr.where(ref, weights, weights)
+        broadcasted_weights = xr.where(ref, weights, weights)
         #addweights = {'C':np.ones(len(x)),'reduce_C_function':np.sum}
-        addweights = {'C': broadcasted_weigths.values.flatten(),'reduce_C_function':np.sum}
+        addweights = {'C': broadcasted_weights.values.flatten(),'reduce_C_function':np.sum}
     else:
         addweights = {}
     im = myax.hexbin(x,y,
