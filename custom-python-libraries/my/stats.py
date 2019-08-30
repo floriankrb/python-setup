@@ -33,33 +33,65 @@ def get_r2(x,y, sample_weight=None):
 
     return r2, linreg
 
-def compute_crit(candidate, ref, candidatename,refname):
-    """ use get_r2 to print nicely different criterion """
+
+from collections import namedtuple
+Criteria = namedtuple('Criteria', 'candidatename refname bias rmsd r2 equation cbig csmall')
+
+def compute_crit(candidate, ref, candidatename,refname, multiplied=1.,weights=None, threshold=None):
+    """ use get_r2() to print nicely different criterion """
+    cbig = None
+    csmall = None
+    if threshold:
+        big = ref > threshold
+        cbig = compute_crit(candidate.where(big), ref.where(big), candidatename,refname, multiplied=multiplied,weights=weights, threshold=None)
+        csmall = compute_crit(candidate.where(~big), ref.where(~big), candidatename,refname, multiplied=multiplied,weights=weights, threshold=None)
+    # Note that the averaging with weights along the 'time' dimension is tricky
+    if not weights is None:
+        weights = xr.where(np.logical_and(~np.isnan(ref),~np.isnan(ref)), weights, 0.)
+    weights2d = weights.mean(['time'])
     import warnings
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
 
         delta = candidate - ref
+
+        if not weights is None: delta = delta * weights
+        delta = delta * multiplied
+
         bias = delta.mean(['time'])
         rmsd = np.sqrt((delta**2).mean(['time']))
 
-        r2, linreg = get_r2(candidate.values.flatten(), ref.values.flatten())
-    bias_ = round(float(bias.mean().values),5)
-    rmsd_ = round(float(rmsd.mean().values),4)
+
+        if not weights is None: weights = weights.values.flatten()
+        r2, linreg = get_r2(candidate.values.flatten(), ref.values.flatten(), sample_weight = weights)
+
+    # Note : compute sum of weights only where the data exists. If we do not do this, the missing data will count as zero
+    # and the final weighted average will be biased towards zero
+    sumweights = float(xr.where(~np.isnan(bias),weights2d, np.nan).sum().values)
+
+    bias_ = round(float(bias.sum().values)/sumweights,5)
+    rmsd_ = round(float(rmsd.sum().values)/sumweights,4)
     r2_ = round(float(r2),4)
     a_ = round(float(linreg.coef_[0]),4)
     b_ = round(float(linreg.intercept_[0]),4)
-    print(f'{candidatename} vs {refname} & {bias_} & {rmsd_} & {r2_} & {a_} * x + {b_} \\\\')
+    return Criteria(refname=refname, candidatename=candidatename,
+            bias=bias_, rmsd=rmsd_, r2=r2_, equation=[a_, b_], cbig=cbig, csmall=csmall)
 
-def plot_scatterplot(candidate, ref, candidatename,refname, hexbin_kwargs=None, xmin=0., xmax=0.7,ymin=0., ymax=0.7, figsize=4, ax=None, weights=None):
+def plot_scatterplot(candidate, ref, candidatename,refname, hexbin_kwargs=None,
+        xmin=0., xmax=0.7,ymin=0., ymax=0.7, figsize=4, ax=None, weights=None,
+        add_criterion_text = False, criterion_text_threshold = None,
+        filename=None, logmessage=True):
     """ Create hexbin between candidate and reference """
-    from palettable.cubehelix import Cubehelix
-    palette = Cubehelix.make(start=0.3, rotation=-0.5, n=16, reverse=True)
-    import palettable
-    cmap = palette.get_mpl_colormap()
-    #cmap = palettable.matplotlib.Inferno_20.get_mpl_colormap()
-    cmap=plt.cm.jet
-    cmap=plt.cm.cubehelix_r
+    try:
+        from palettable.cubehelix import Cubehelix
+        palette = Cubehelix.make(start=0.3, rotation=-0.5, n=16, reverse=True)
+        import palettable
+        cmap = palette.get_mpl_colormap()
+        #cmap = palettable.matplotlib.Inferno_20.get_mpl_colormap()
+        cmap=plt.cm.jet
+        cmap=plt.cm.cubehelix_r
+    except ImportError:
+        cmap = 'cubehelix_r'
     if hexbin_kwargs is None:
         hexbin_kwargs = {}
     if ax is None:
@@ -79,13 +111,41 @@ def plot_scatterplot(candidate, ref, candidatename,refname, hexbin_kwargs=None, 
         addweights = {}
     im = myax.hexbin(x,y,
             cmap=cmap, bins='log',
+            gridsize=200,
             **addweights, **hexbin_kwargs );
     myax.set_xlim(xmin,xmax); myax.set_ylim(xmin,ymax); myax.add_line(mlines.Line2D([0.,1.],  [0.,1.],color='k'))
     myax.set_ylabel(candidatename); myax.set_xlabel(refname)
 
-
-
     f.subplots_adjust(right=0.8)
     cbar_ax = f.add_axes([0.85, 0.15, 0.05, 0.7])
     f.colorbar(im, cax=cbar_ax)
+
+    if add_criterion_text:
+        c = my.stats.compute_crit(candidate, ref, candidatename, refname, multiplied=1.,weights=weights)
+        text = f'{c.candidatename} vs {c.refname} :\nBias={c.bias} RMSE={c.rmsd}\n' # & {c.r2} & {c.equation[0]} * x + {c.equation[1]}'
+
+        text = f'{c.candidatename} vs {c.refname} :\nBias={c.bias} RMSE={c.rmsd}\n' # & {c.r2} & {c.equation[0]} * x + {c.equation[1]}'
+
+        if criterion_text_threshold:
+            def t(x):
+                if x is None: return None
+                return x.where(ref<criterion_text_threshold)
+            c1 = my.stats.compute_crit(t(candidate), t(ref), candidatename, refname, multiplied=1.,weights=t(weights))
+            text += f'Bias={c1.bias} RMSE={c1.rmsd} (<{criterion_text_threshold})\n' # & {c.r2} & {c.equation[0]} * x + {c.equation[1]}'
+
+            def t(x):
+                if x is None: return None
+                return x.where(ref>=criterion_text_threshold)
+            c1 = my.stats.compute_crit(t(candidate), t(ref), candidatename, refname, multiplied=1.,weights=t(weights))
+            text += f'Bias={c1.bias} RMSE={c1.rmsd} (>{criterion_text_threshold})\n' # & {c.r2} & {c.equation[0]} * x + {c.equation[1]}'
+
+        try:
+            ax.text(0.02,0.75,text, transform=ax.transAxes)
+        except:
+            f.text(0.02,0.75,text, transform=ax.transFigure) # may work, or may not, if f is figure or ax, maybe
+    if filename:
+        my.io.ensure_dir(filename)
+        f.savefig(filename)
+        if logmessage:
+            logging.info(f'Saved plot in {filename}')
     return outvar
