@@ -1,1 +1,1 @@
-coloredlogs datetime-glob f90nml humanfriendly pyminifier tzwhere nbresuse memory-profiler
+coloredlogs datetime-glob f90nml humanfriendly pyminifier tzwhere nbresuse memory-profiler future-fstrings
