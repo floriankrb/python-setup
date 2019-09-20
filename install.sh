@@ -103,12 +103,9 @@ echo
 
 _PYTHON_TEAM_VARENV=`cat $_PYTHON_TEAM_DIR/defaultenvname.txt`
 
-conda env create -f $_PYTHON_TEAM_DIR/$_PYTHON_TEAM_VARENV.yml
+echo "if you want you own env please run :"
+echo "conda env create -n my$_PYTHON_TEAM_VARENV -f $_PYTHON_TEAM_DIR/$_PYTHON_TEAM_VARENV.yml"
 
-export PATH="$HOME/miniconda3/bin:$PATH"
-export PYTHONNOUSERSITE=1
-
-source activate $_PYTHON_TEAM_VARENV
 
 echo 'Now we would like to ask you few questions:'
 echo 'What is your firstname (prénom) ?'
