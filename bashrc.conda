@@ -12,6 +12,7 @@ function setup-conda-team-python-env {
     # added by Miniconda3 4.3.21 installer
     echo "adding '$HOME/miniconda3/bin' to the PATH"
     echo "Setting conda default environment"
+    export CONDA_ENVS_PATH=/cnrm/vegeo/SAT/tools/miniconda3/envs:~/miniconda3/envs;
     . /$HOME/miniconda3/etc/profile.d/conda.sh
     #export PYTHONNOUSERSITE=1
     _PYTHON_TEAM_VARENV=`cat $_PYTHON_TEAM_DIR/defaultenvname.txt`
