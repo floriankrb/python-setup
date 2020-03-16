@@ -46,9 +46,13 @@ def compute_crit(candidate, ref, candidatename,refname, multiplied=1.,weights=No
         cbig = compute_crit(candidate.where(big), ref.where(big), candidatename,refname, multiplied=multiplied,weights=weights, threshold=None)
         csmall = compute_crit(candidate.where(~big), ref.where(~big), candidatename,refname, multiplied=multiplied,weights=weights, threshold=None)
     # Note that the averaging with weights along the 'time' dimension is tricky
-    if not weights is None:
-        weights = xr.where(np.logical_and(~np.isnan(ref),~np.isnan(ref)), weights, 0.)
-    weights2d = weights.mean(['time'])
+    if weights is None:
+        weights = ref * 0. + 1.
+    weights = xr.where(np.logical_and(~np.isnan(ref),~np.isnan(ref)), weights, 0.)
+    if 'time' in weights.dims:
+        weights2d = weights.mean(['time'])
+    else:
+        weights2d = weights
     import warnings
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
@@ -58,8 +62,12 @@ def compute_crit(candidate, ref, candidatename,refname, multiplied=1.,weights=No
         if not weights is None: delta = delta * weights
         delta = delta * multiplied
 
-        bias = delta.mean(['time'])
-        rmsd = np.sqrt((delta**2).mean(['time']))
+        if not weights is None and 'time' in weights.dims:
+            bias = delta.mean(['time'])
+            rmsd = np.sqrt((delta**2).mean(['time']))
+        else:
+            bias = delta
+            rmsd = np.sqrt(delta**2)
 
 
         if not weights is None: weights = weights.values.flatten()
@@ -67,7 +75,10 @@ def compute_crit(candidate, ref, candidatename,refname, multiplied=1.,weights=No
 
     # Note : compute sum of weights only where the data exists. If we do not do this, the missing data will count as zero
     # and the final weighted average will be biased towards zero
-    sumweights = float(xr.where(~np.isnan(bias),weights2d, np.nan).sum().values)
+    if not weights is None:
+        sumweights = float(xr.where(~np.isnan(bias),weights2d, np.nan).sum().values)
+    else:
+        sumweights = 1.
 
     bias_ = round(float(bias.sum().values)/sumweights,5)
     rmsd_ = round(float(rmsd.sum().values)/sumweights,4)
@@ -78,7 +89,7 @@ def compute_crit(candidate, ref, candidatename,refname, multiplied=1.,weights=No
             bias=bias_, rmsd=rmsd_, r2=r2_, equation=[a_, b_], cbig=cbig, csmall=csmall)
 
 def plot_scatterplot(candidate, ref, candidatename,refname, hexbin_kwargs=None,
-        xmin=0., xmax=0.7,ymin=0., ymax=0.7, figsize=4, ax=None, weights=None,
+        xmin=0., xmax=0.7,ymin=0., ymax=0.7, figsize=4, ax=None,f=None, weights=None,
         add_criterion_text = False, criterion_text_threshold = None,
         filename=None, logmessage=True):
     """ Create hexbin between candidate and reference """
@@ -109,10 +120,10 @@ def plot_scatterplot(candidate, ref, candidatename,refname, hexbin_kwargs=None,
         addweights = {'C': broadcasted_weights.values.flatten(),'reduce_C_function':np.sum}
     else:
         addweights = {}
-    im = myax.hexbin(x,y,
-            cmap=cmap, bins='log',
-            gridsize=200,
-            **addweights, **hexbin_kwargs );
+    if not 'gridsize' in hexbin_kwargs: hexbin_kwargs['gridsize'] = 200
+    if not 'bins' in hexbin_kwargs: hexbin_kwargs['bins'] = 'log'
+    if not 'cmap' in hexbin_kwargs: hexbin_kwargs['cmap'] = cmap
+    im = myax.hexbin(x,y, **addweights, **hexbin_kwargs );
     myax.set_xlim(xmin,xmax); myax.set_ylim(xmin,ymax); myax.add_line(mlines.Line2D([0.,1.],  [0.,1.],color='k'))
     myax.set_ylabel(candidatename); myax.set_xlabel(refname)
 

@@ -9,6 +9,10 @@ ulimit -v 30000000
 alias llt='ls -rlt'
 alias sxvgo1='ssh sxvgo1'
 
+alias jobs-with-varenv='jobs -p | xargs ps -p | tail -n+2 | awk "{print substr(\$0, index(\$0, \$5))}"'
+
+
+
 mmake() {
   pathpat="(/[^/]*)+:[0-9]+"
   ccred=$(echo -e "\033[0;31m")
