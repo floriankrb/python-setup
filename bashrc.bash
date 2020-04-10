@@ -1,5 +1,5 @@
 #limit memory usage per process to 30G
-ulimit -v 30000000
+#ulimit -v 30000000
 
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
