@@ -40,8 +40,9 @@ PS1=$PS1'$(pwd -P | sed -e "s:/home/$USER:~:" -e "s:/mnt/lfs/d30/:/cnrm/:" -e "s
 echo $DISPLAY > $HOME/.latest_display
 alias f-display-reset='export DISPLAY=$(cat $HOME/.latest_display)'
 
-echo "Run 'hdf-set-up-my-hdf5-lib-to-use-pinaultf-libraries' if you want to use the hdf library from Florian"
+#echo "Run 'hdf-set-up-my-hdf5-lib-to-use-pinaultf-libraries' if you want to use the hdf library from Florian"
 alias hdf-set-up-my-hdf5-lib-to-use-pinaultf-libraries="source $_PYTHON_TEAM_DIR/hdf-set-up-my-hdf5-lib-to-use-pinaultf-libraries.TODO.sh"
+alias hdf-set-up-legacy-hdf5-libraries="source /conda/legacy-libs-setup.sh"
 
 export PATH=$_PYTHON_TEAM_DIR/bin:$PATH
 export PYTHONPATH=$_PYTHON_TEAM_DIR/custom-python-libraries:$PYTHONPATH
