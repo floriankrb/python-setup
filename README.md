@@ -41,3 +41,6 @@ $ gedit environment.yml
 See which package was installed and add what should be added :
 git add -p
 git commit -m'added package mynewpackage'
+
+# Known issues
+- cartopy: 0.17.0   and  matplotlib: 3.3.0 are not compatible (https://stackoverflow.com/questions/63170989/typeerror-when-using-cartopy-to-plot-xarray-pcolormesh). When installing packages, I had to force the version for cartopy=0.18.0, then install all packages without proj4. Hopefully what is needed from proj4 in the other packages is installed correctly as a dependency of these packages.
